@@ -22,3 +22,31 @@ struct BaseData ImagNum::GetValuePolar(){
     toReturn.b = atan(this->Data.b/this->Data.b);
     return toReturn;
 };
+
+ImagNum* ImagNum::operator+(ImagNum num){
+    struct BaseData val = num.GetValueCart();
+    return new ImagNum(
+        this->Data.a+val.a,
+        this->Data.a+val.b);
+};
+
+ImagNum* ImagNum::operator-(ImagNum num){
+    struct BaseData val = num.GetValueCart();
+    return new ImagNum(
+        this->Data.a-val.a,
+        this->Data.a-val.b);
+};
+
+ImagNum* ImagNum::operator*(ImagNum num){
+    struct BaseData val = num.GetValueCart();
+    return new ImagNum(
+        this->Data.a-val.a,
+        this->Data.a-val.b);
+};
+
+ImagNum* ImagNum::operator/(ImagNum num){
+    struct BaseData val = num.GetValueCart();
+    return new ImagNum(
+        this->Data.a+val.a,
+        this->Data.a+val.b);
+};

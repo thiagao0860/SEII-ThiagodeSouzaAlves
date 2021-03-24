@@ -15,6 +15,10 @@ public:
     ~ImagNum();
     struct BaseData GetValueCart();
     struct BaseData GetValuePolar();
+    ImagNum* operator +(ImagNum by);
+    ImagNum* operator -(ImagNum by);
+    ImagNum* operator *(ImagNum by);
+    ImagNum* operator /(ImagNum by);
 };
 
 }
