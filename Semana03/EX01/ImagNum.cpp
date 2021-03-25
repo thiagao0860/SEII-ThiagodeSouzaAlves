@@ -27,26 +27,27 @@ ImagNum* ImagNum::operator+(ImagNum num){
     struct BaseData val = num.GetValueCart();
     return new ImagNum(
         this->Data.a+val.a,
-        this->Data.a+val.b);
+        this->Data.b+val.b);
 };
 
 ImagNum* ImagNum::operator-(ImagNum num){
     struct BaseData val = num.GetValueCart();
     return new ImagNum(
         this->Data.a-val.a,
-        this->Data.a-val.b);
+        this->Data.b-val.b);
 };
 
 ImagNum* ImagNum::operator*(ImagNum num){
     struct BaseData val = num.GetValueCart();
     return new ImagNum(
-        this->Data.a-val.a,
-        this->Data.a-val.b);
+        this->Data.a*val.a-this->Data.b*val.b,
+        this->Data.a*val.b+this->Data.b*val.a);
 };
 
 ImagNum* ImagNum::operator/(ImagNum num){
     struct BaseData val = num.GetValueCart();
+    double d = val.a*val.a+val.b*val.b; 
     return new ImagNum(
-        this->Data.a+val.a,
-        this->Data.a+val.b);
+        (this->Data.a*val.a+this->Data.b*val.b),
+        this->Data.b*val.a-this->Data.a+val.b);
 };

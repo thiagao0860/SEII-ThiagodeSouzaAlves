@@ -6,7 +6,7 @@ using namespace ImagComp;
 
 int main(){
     ImagNum x(1,1),y(2,2);
-    ImagNum* z = x+y;
-    cout<< z->GetValueCart().a << endl;
+    ImagNum* z = x*y;
+    cout<< z->GetValueCart().a << " " << z->GetValueCart().b << endl;
     return 0;
 }
