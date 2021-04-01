@@ -21,9 +21,10 @@ void ServerTCP::initServer(){
     cout<<"listening on port "<<this->port<<endl;
     auto addrlen = sizeof(this->address);
     auto new_socket = accept(this->server_FD, (struct sockaddr *)&(this->address), (socklen_t*)&addrlen);
-    int valread = recv( new_socket , buffer, 2*sizeof(char), 0);
+    char* received = new char[2];
+    int valread = recv( new_socket , received, 2, 0);
     //cout<<buffer;
-    switch (buffer[0])
+    switch (received[0])
     {
     case ServerTCP::ConOpts::GET_FILE:
         this->sendFile(new_socket);
@@ -39,8 +40,10 @@ void ServerTCP::setTransferHandle(FileIOHandler* transferFunction){
 }
 
 void ServerTCP::sendFile(int socket){
-    char* a = this->tranferHandle->getData();
-    send(socket , a , 1024*sizeof(char) , 0);
+    char* a;
+    while((a = this->tranferHandle->getData())!=nullptr){
+        send(socket , a , 1024 , 0);
+    }
 }
 
 ServerTCP::~ServerTCP()

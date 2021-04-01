@@ -23,10 +23,10 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    int sock = 0, valread;
+    int sock = 0, valread=1024;
     struct sockaddr_in serv_addr;
     string hello = "Hello from client";
-    char buffer[1024] = {0};
+    char* buffer = new char[1024];
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
@@ -50,8 +50,9 @@ int main(int argc, char** argv)
         return -1;
     }
     send(sock , "0" , 2, 0);
-    cout<<"Hello message sent"<<endl;
-    valread = recv( sock , buffer, 1024*sizeof(char) ,0);
-    cout<<buffer[5]<<endl;
+    while (valread==1024){
+        valread = recv(sock, buffer, 1024, 0);
+        cout<<buffer<<endl;
+    }
     return 0;
 }

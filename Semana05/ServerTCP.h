@@ -20,7 +20,6 @@ private:
     int server_FD;
     FileIOHandler* tranferHandle;
     struct sockaddr_in address;
-    char buffer[1024] = {0};
     map<string, int> users;
 public:
     ServerTCP(int port);
