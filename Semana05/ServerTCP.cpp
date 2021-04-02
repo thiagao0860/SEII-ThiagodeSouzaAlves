@@ -13,7 +13,6 @@ ServerTCP::ServerTCP(int port)
     this->server_FD =socket(AF_INET, SOCK_STREAM, 0);
     setsockopt(this->server_FD, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt));
     bind(this->server_FD, (struct sockaddr *)&address, sizeof(address));
-    
 }
 
 void ServerTCP::initServer(){
@@ -40,9 +39,9 @@ void ServerTCP::setTransferHandle(FileIOHandler* transferFunction){
 }
 
 void ServerTCP::sendFile(int socket){
-    char* a;
-    while((a = this->tranferHandle->getData())!=nullptr){
-        send(socket , a , 1024 , 0);
+    vector<char> a;
+    while((a = this->tranferHandle->getData()).size()>0){
+        send(socket , &a[0] , a.size() , 0);
     }
 }
 

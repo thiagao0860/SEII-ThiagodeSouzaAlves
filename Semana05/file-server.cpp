@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include "ServerTCP.h"
+#include "FileIOHandler.h"
 
 using namespace std;
 
@@ -22,16 +23,18 @@ int main(int argc, char** argv)
         cout<<"invalid port"<<endl;    
         return 1;
     }
-    FileIOHandler* file = new FileIOHandler(argv[2]);
     try{
-     ServerTCP server = ServerTCP(port);
+     FileIOHandler* file = new FileIOHandler(argv[2],FileIOHandler::INPUT);
+     ServerTCP server(port);
      server.setTransferHandle(file);
      server.initServer();
+     delete file;
     }
     catch(exception e)
     {
         cout<< e.what() <<endl;
         return -1;
     }
+
     return 0;
 }
