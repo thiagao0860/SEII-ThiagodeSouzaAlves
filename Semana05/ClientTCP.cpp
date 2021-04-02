@@ -16,7 +16,8 @@ ClientTCP::ClientTCP(string vIP, int port)
 
 void ClientTCP::Connect(){
     connect(this->sock, (struct sockaddr *)&(this->serv_addr), sizeof(this->serv_addr));
-    send(this->sock , "0", 2, 0);
+    char a[1]{ ServerTCP::GET_FILE };
+    send(this->sock ,a , 1, 0);
     receiveFile();
 }
 

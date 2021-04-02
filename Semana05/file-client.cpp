@@ -26,7 +26,7 @@ int main(int argc, char** argv)
         return 1;
     }
     try{
-    FileIOHandler* file = new FileIOHandler("saida", FileIOHandler::OUTPUT);
+    FileIOHandler* file = new FileIOHandler(argv[3], FileIOHandler::OUTPUT);
     ClientTCP client(argv[1],port);
     client.setTransferHandle(file);
     client.Connect();

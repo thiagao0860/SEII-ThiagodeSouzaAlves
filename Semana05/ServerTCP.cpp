@@ -20,8 +20,8 @@ void ServerTCP::initServer(){
     cout<<"listening on port "<<this->port<<endl;
     auto addrlen = sizeof(this->address);
     auto new_socket = accept(this->server_FD, (struct sockaddr *)&(this->address), (socklen_t*)&addrlen);
-    char* received = new char[2];
-    int valread = recv( new_socket , received, 2, 0);
+    char* received = new char[1];
+    int valread = recv( new_socket , received, 1, 0);
     //cout<<buffer;
     switch (received[0])
     {
