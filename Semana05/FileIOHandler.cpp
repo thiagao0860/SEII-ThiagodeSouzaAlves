@@ -24,11 +24,14 @@ FileIOHandler::~FileIOHandler()
 }
 
 vector<char> FileIOHandler::getData(){
-    if(this->file_length==this->seek_pointer){return vector<char>(0);
+    if(this->file_length==this->seek_pointer){
+        this->seek_pointer=0;
+        this->file->seekg(0, this->file->beg);
+        return vector<char>(0);
     }else if((this->file_length-this->seek_pointer)/1024>0){
         vector<char> returnValue(1024);
         this->file->read(&returnValue[0],1024);
-        this->seek_pointer +=1024;
+        this->seek_pointer +=1024;        
         return returnValue;
     }else if((this->file_length-this->seek_pointer)%1024>0){
         fstream::pos_type tam = (this->file_length-this->seek_pointer);

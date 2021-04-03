@@ -19,5 +19,6 @@ public:
     void Connect();
     void setTransferHandle(FileIOHandler* transferFunction);
     void receiveFile();
+    void useChat(std::string name);
     ~ClientTCP();
 };

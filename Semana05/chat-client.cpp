@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     ClientTCP client(argv[1],port);
     client.setTransferHandle(file);
     client.Connect();
-    client.receiveFile();
+    client.useChat("thiago");
     delete file;
     }catch (exception e){
         cout<< e.what() <<endl;

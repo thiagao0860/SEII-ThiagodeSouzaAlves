@@ -16,9 +16,6 @@ ClientTCP::ClientTCP(string vIP, int port)
 
 void ClientTCP::Connect(){
     connect(this->sock, (struct sockaddr *)&(this->serv_addr), sizeof(this->serv_addr));
-    char a[1]{ ServerTCP::GET_FILE };
-    send(this->sock ,a , 1, 0);
-    receiveFile();
 }
 
 void ClientTCP::setTransferHandle(FileIOHandler* transferHandle){
@@ -26,6 +23,8 @@ void ClientTCP::setTransferHandle(FileIOHandler* transferHandle){
 }
 
 void ClientTCP::receiveFile(){
+    char a[1]{ ServerTCP::GET_FILE};
+    send(this->sock ,a , 1, 0);
     int valread =1024;
     char buffer[1024];
     vector<char>* data;
@@ -34,6 +33,15 @@ void ClientTCP::receiveFile(){
         data = new vector<char>( buffer,buffer + valread);
         this->tranferHandle->setData(*data);
     }
+}
+
+void ClientTCP::useChat(string name){
+    char a[1]{ ServerTCP::USE_CHAT};
+    char buffer[1024];
+    send(this->sock ,a , 1, 0);
+    recv(this->sock,buffer,4,0);
+    send(this->sock ,name.c_str() , name.length(), 0);
+    
 }
 
 ClientTCP::~ClientTCP()
