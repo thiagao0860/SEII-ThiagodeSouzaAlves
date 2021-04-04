@@ -36,12 +36,37 @@ void ClientTCP::receiveFile(){
 }
 
 void ClientTCP::useChat(string name){
-    char a[1]{ ServerTCP::USE_CHAT};
-    char buffer[1024];
+   char a[1]{ ServerTCP::USE_CHAT};
+    char buffer[4];
     send(this->sock ,a , 1, 0);
     recv(this->sock,buffer,4,0);
     send(this->sock ,name.c_str() , name.length(), 0);
-    
+    string sendto;
+    cout<<"Connected as "<<name<<" welcome."<<endl;
+    cout<<"Send to: ";
+    cout.clear();
+    cin>>sendto;
+    send(this->sock, sendto.c_str(), sendto.length(),0);
+    thread t1([this](int _sock){
+            cout<<"type your message: ";
+       while(true){
+            string message;
+            getline( cin, message );
+            send(_sock, message.c_str(), message.length(),0);
+       }
+    },this->sock);
+    thread t2([this](int sock){
+       string received;
+       while(true){
+            char intr[1024];
+            auto readedi=recv(this->sock,intr,1024,0);
+            received = string(intr,readedi);
+            cout<<"\nreceived: \""<<received<<"\""<<endl;
+            cout.clear();
+       } 
+    },this->sock);
+    t1.join();
+    t2.join();
 }
 
 ClientTCP::~ClientTCP()

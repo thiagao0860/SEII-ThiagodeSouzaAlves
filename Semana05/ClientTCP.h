@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "FileIOHandler.h"
 #include "ServerTCP.h"
+#include <cstring>
 
 class ClientTCP
 {

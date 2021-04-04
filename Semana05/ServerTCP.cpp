@@ -28,7 +28,6 @@ void ServerTCP::initServer(){
         {
             this->handler_threads.push_back(
             thread([this](int vSock){
-                
                 char buffer[1024];
                 send(vSock , "wait",4,0);
                 int valread_internal = recv(vSock , buffer,1024,0);
@@ -36,6 +35,20 @@ void ServerTCP::initServer(){
                 this->users.insert(make_pair(nome,vSock));
                 cout<<"user "<<nome<<" inserted"<<endl;
                 cout.clear();
+                valread_internal = recv(vSock , buffer,1024,0);
+                string sendTo = string( buffer, valread_internal);
+                cout<<"user "<<nome<<" envia para "<<sendTo<<endl;
+                cout.clear();
+                vector<char>* mes;
+                while(true){
+                    valread_internal=recv(vSock , buffer,1024,0);
+                    mes= new vector<char>(buffer,buffer+valread_internal);
+                    this->handler_threads.push_back(
+                    thread([this](string _sendTo, vector<char> _message){
+                         this->sendMessage(_sendTo,_message);
+                    },sendTo,*mes));
+                    delete mes;
+                }
             },new_socket));
         }
         if(received[0]==ServerTCP::GET_FILE)
@@ -43,8 +56,8 @@ void ServerTCP::initServer(){
             this->handler_threads.push_back(
             thread([this](int vSock){
                 this->sendFile(vSock);
-                },new_socket));
-            cout<<"File sended to "<< new_socket <<endl;
+                cout<<"File sended to "<< vSock <<endl;
+            },new_socket));
         }
         
         delete[] received;
@@ -62,7 +75,16 @@ void ServerTCP::sendFile(int socket){
     }
 }
 
+void ServerTCP::sendMessage(string user, vector<char> message){
+    int sock = (this->users.find(user))->second;
+    send(sock , &message[0] , message.size() , 0);
+}
+
 ServerTCP::~ServerTCP()
 {
-    
+    for (size_t i = 0; i < this->handler_threads.size(); i++)
+    {
+        this->handler_threads[i].join();
+    }
+      
 }
